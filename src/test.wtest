@@ -1,0 +1,52 @@
+import rodados.*
+
+ 
+test "testRodados" {
+	var deportes = new Dependencia()
+	var cultura = new Dependencia()
+	deportes.empleados(45)
+	cultura.empleados(31)
+	
+	var cachito = new Corsa()
+	cachito.color("rojo")
+	deportes.agregarAFlota(cachito)
+	
+	var corsaAzul = new Corsa()
+	corsaAzul.color("azul")
+	deportes.agregarAFlota(corsaAzul)
+	
+	var corsaVerde = new Corsa()
+	corsaVerde.color("verde")
+	deportes.agregarAFlota(corsaVerde)
+	
+	var kwid1 = new Kwid()
+	kwid1.tanqueDeGas(true)
+	deportes.agregarAFlota(kwid1)
+	
+	var autoEspecial1 = new AutoEspecial()
+	autoEspecial1.capacidad(5)
+	autoEspecial1.velocidadMaxima(160)
+	autoEspecial1.peso(1200)
+	autoEspecial1.color("beige")
+	deportes.agregarAFlota(autoEspecial1)
+	
+	cultura.agregarAFlota(cachito)
+	cultura.agregarAFlota(kwid1)
+	
+	var kwid2 = new Kwid()
+	kwid1.tanqueDeGas(true)
+	cultura.agregarAFlota(kwid2)
+	
+	var kwid3 = new Kwid()
+	kwid1.tanqueDeGas(false)
+	cultura.agregarAFlota(kwid3)
+	
+	trafic.interior(interiorPopular)
+	trafic.motor(motorBataton)
+	cultura.agregarAFlota(trafic)
+	
+	assert.equals(6450,deportes.pesoTotalFlota())
+	
+	
+
+}
