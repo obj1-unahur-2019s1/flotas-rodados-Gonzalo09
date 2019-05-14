@@ -25,7 +25,7 @@ class Kwid {
 		else { return 1200 }
 	}
 	
-	method color() { return "Azul" }
+	method color() { return "azul" }
 }
 
 object trafic {
@@ -64,46 +64,3 @@ class AutoEspecial {
 	var property peso = 0
 	var property color = ""
 }
-
-class Dependencia {
-	var flota = []
-	var property empleados = 0
-	
-	method agregarAFlota(rodado) {
-		flota.add(rodado)
-	}
-	
-	method quitarDeFlota(rodado) {
-		flota.remove(rodado)
-	}
-	
-	method pesoTotalFlota() {
-		return flota.sum({ f => f.peso() })
-	}
-	
-	method estaBienEquipada(){
-		return flota.size() >=3 and flota.all({ f => f.velocidadMaxima() >= 100})
-		//return(flota.count({ f => f.velocidadMaxima() >= 100 }) >= 3 )
-	}
-	
-	method capacidadTotalEnColor(color) {
-		var autosDeColor = flota.filter ({ f => f.color() == color })
-		return autosDeColor.sum({ s => s.capacidad() })
-	}
-
-	method colorDelRodadoMasRapido() {
-		var masVeloz = flota.max({ f => f.velocidadMaxima()})
-		return masVeloz.color()
-	}
-	
-	method capacidadFaltante() {
-		//NO//var capacidadTotal = flota.sum({ f => f.capacidad() })
-		//return empleados - capacidadTotal
-	}
-	
-	method esGrande(){
-		return (empleados >= 40 and flota.size() >= 5)
-	}
-}
-
-

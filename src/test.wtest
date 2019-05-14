@@ -1,52 +1,82 @@
 import rodados.*
+import dependencia.*
+import pedidos.*
 
- 
-test "testRodados" {
-	var deportes = new Dependencia()
-	var cultura = new Dependencia()
-	deportes.empleados(45)
-	cultura.empleados(31)
-	
-	var cachito = new Corsa()
-	cachito.color("rojo")
-	deportes.agregarAFlota(cachito)
-	
-	var corsaAzul = new Corsa()
-	corsaAzul.color("azul")
-	deportes.agregarAFlota(corsaAzul)
-	
-	var corsaVerde = new Corsa()
-	corsaVerde.color("verde")
-	deportes.agregarAFlota(corsaVerde)
-	
-	var kwid1 = new Kwid()
-	kwid1.tanqueDeGas(true)
-	deportes.agregarAFlota(kwid1)
-	
-	var autoEspecial1 = new AutoEspecial()
-	autoEspecial1.capacidad(5)
-	autoEspecial1.velocidadMaxima(160)
-	autoEspecial1.peso(1200)
-	autoEspecial1.color("beige")
-	deportes.agregarAFlota(autoEspecial1)
-	
-	cultura.agregarAFlota(cachito)
-	cultura.agregarAFlota(kwid1)
-	
-	var kwid2 = new Kwid()
-	kwid1.tanqueDeGas(true)
-	cultura.agregarAFlota(kwid2)
-	
-	var kwid3 = new Kwid()
-	kwid1.tanqueDeGas(false)
-	cultura.agregarAFlota(kwid3)
-	
-	trafic.interior(interiorPopular)
-	trafic.motor(motorBataton)
-	cultura.agregarAFlota(trafic)
-	
-	assert.equals(6450,deportes.pesoTotalFlota())
-	
-	
+describe "rodados" {
+	var cachito = new Corsa(color = "rojo")
 
+
+	test "testCultura" {
+		var cultura = new Dependencia()
+		cultura.empleados(31)
+		cultura.agregarAFlota(cachito)
+		var kwid1 = new Kwid(tanqueDeGas = true)
+		cultura.agregarAFlota(kwid1)
+		var kwid2 = new Kwid(tanqueDeGas = true)
+		cultura.agregarAFlota(kwid2)
+		var kwid3 = new Kwid(tanqueDeGas = false)
+		cultura.agregarAFlota(kwid3)
+		trafic.interior(interiorPopular)
+		trafic.motor(motorBataton)
+		cultura.agregarAFlota(trafic)
+		
+		assert.equals(10700,cultura.pesoTotalFlota())
+		assert.equals(false,cultura.estaBienEquipada())
+		assert.equals(10,cultura.capacidadTotalEnColor("azul"))
+		assert.equals("rojo",cultura.colorDelRodadoMasRapido())
+		assert.equals(false, cultura.esGrande())
+		assert.equals(5, cultura.capacidadFaltante())
+	}
+	
+	test "testDeportes" {
+		var deportes = new Dependencia()
+		deportes.empleados(45)
+	
+		deportes.agregarAFlota(cachito)
+		
+		var corsaAzul = new Corsa()
+		corsaAzul.color("azul")
+		deportes.agregarAFlota(corsaAzul)
+		
+		var corsaVerde = new Corsa()
+		corsaVerde.color("verde")
+		deportes.agregarAFlota(corsaVerde)
+		
+		var kwid1 = new Kwid()
+		kwid1.tanqueDeGas(true)
+		deportes.agregarAFlota(kwid1)
+		
+		var autoEspecial1 = new AutoEspecial()
+		autoEspecial1.capacidad(5)
+		autoEspecial1.velocidadMaxima(160)
+		autoEspecial1.peso(1200)
+		autoEspecial1.color("beige")
+		deportes.agregarAFlota(autoEspecial1)
+		
+		assert.equals(6450,deportes.pesoTotalFlota())
+		assert.equals(true,deportes.estaBienEquipada())
+		assert.equals(7, deportes.capacidadTotalEnColor("azul"))
+		assert.equals("beige", deportes.colorDelRodadoMasRapido())
+		assert.equals(true, deportes.esGrande())
+		assert.equals(25, deportes.capacidadFaltante())
+		
+	}
+
+	test "pedidos" {
+		
+		var pedido = new Pedido()
+		pedido.distancia(960)
+		pedido.tiempoMaximo(8)
+		pedido.cantPasajeros(4)
+		pedido.coloresIncompatibles().add(#{"azul", "negro"})
+		
+		assert.equals(true, pedido.puedeSatisfacerPedido(cachito))
+		
+		pedido.coloresIncompatibles().add(#{"rojo"})
+		pedido.cantPasajeros(6)
+		assert.equals(false, pedido.puedeSatisfacerPedido(cachito))
+		
+		pedido.tiempoMaximo(6)
+		assert.equals(false, pedido.puedeSatisfacerPedido(cachito))
+	}
 }
