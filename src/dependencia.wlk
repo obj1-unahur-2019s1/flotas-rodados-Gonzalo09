@@ -3,6 +3,7 @@ import rodados.*
 class Dependencia {
 	var flota = []
 	var property empleados = 0
+	var pedidos
 	
 	method agregarAFlota(rodado) {
 		flota.add(rodado)
@@ -40,6 +41,29 @@ class Dependencia {
 	
 	method esGrande(){
 		return (empleados >= 40 and flota.size() >= 5)
+	}
+	
+	method agregarPedido(pedido) {pedidos.add(pedido)}
+	method quitarPedido(pedido) {pedidos.remove(pedido)}
+	
+	method totalPasajerosEnPedidos() {
+		return pedidos.sum ({ pedido => pedido.cantPasajeros() })
+	}
+	
+	method pedidosInsatisfechos() {
+		return pedidos.filter({ pedido => not self.puedeSatisfacerPedido(pedido) })
+	}
+	
+	method puedeSatisfacerPedido(pedido) {
+		return flota.any ({ veh => pedido.puedeSatisfacerPedido(veh) })
+	}
+	
+	method esColorRechazado(color) {
+		return pedidos.all ({ pedido => pedido.coloresIncompatibles().contains(color) })
+	}
+	
+	method relajarTodosLosPedidos() {
+		pedidos.forEach ({ pedido => pedido.relajar() })
 	}
 	
 }
